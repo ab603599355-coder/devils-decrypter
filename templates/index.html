@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💀 DEVILS WILL RISE - Decrypter</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body {
+    min-height: 100vh;
+    background: radial-gradient(circle at 20% 20%, #1a0033, #000 70%);
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,0,100,0.03) 0 1px, transparent 1px 3px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 780px;
+    background: rgba(15, 5, 25, 0.85);
+    border: 1px solid rgba(255, 0, 100, 0.3);
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 0 60px rgba(255, 0, 100, 0.15), inset 0 0 30px rgba(0,0,0,0.8);
+  }
+  h1 {
+    text-align: center;
+    font-size: 26px;
+    background: linear-gradient(90deg, #ff0064, #b300ff, #00d4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 25px;
+  }
+  .dropzone {
+    border: 2px dashed rgba(255, 0, 100, 0.5);
+    border-radius: 14px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(255, 0, 100, 0.03);
+    margin-bottom: 18px;
+  }
+  .dropzone:hover, .dropzone.drag {
+    border-color: #ff0064;
+    background: rgba(255, 0, 100, 0.08);
+  }
+  .dropzone .icon { font-size: 42px; margin-bottom: 10px; }
+  .dropzone p { color: #bbb; font-size: 14px; }
+  .dropzone .hint { font-size: 12px; color: #666; margin-top: 6px; }
+  .divider {
+    text-align: center;
+    color: #555;
+    margin: 18px 0;
+    font-size: 13px;
+    position: relative;
+  }
+  .divider::before, .divider::after {
+    content: ''; position: absolute; top: 50%; width: 42%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,0,100,0.4), transparent);
+  }
+  .divider::before { right: 0; }
+  .divider::after { left: 0; }
+  textarea {
+    width: 100%;
+    min-height: 90px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,0,100,0.25);
+    border-radius: 12px;
+    color: #e0e0e0;
+    padding: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    resize: vertical;
+    outline: none;
+  }
+  textarea:focus { border-color: #ff0064; }
+  button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ff0064, #b300ff);
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 0 25px rgba(255, 0, 100, 0.4);
+  }
+  button:hover:not(:disabled) { transform: translateY(-2px); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .loading {
+    display: none; text-align: center; padding: 20px;
+    color: #ff0064; font-size: 15px;
+  }
+  .loading.show { display: block; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid rgba(255,0,100,0.2);
+    border-top-color: #ff0064;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .output {
+    display: none;
+    margin-top: 22px;
+    background: #000;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    padding: 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #0f0;
+    max-height: 480px;
+    overflow-y: auto;
+    line-height: 1.5;
+  }
+  .output.show { display: block; }
+  .output.error { color: #ff3860; border-color: rgba(255,0,100,0.5); }
+  .output-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px; padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+  }
+  .output-type { color: #00d4ff; font-weight: bold; font-size: 13px; }
+  .copy-btn {
+    width: auto; margin: 0; padding: 6px 14px; font-size: 12px;
+    background: rgba(0,212,255,0.2); box-shadow: none;
+  }
+  .footer {
+    text-align: center; margin-top: 22px;
+    font-size: 12px; color: #666;
+  }
+  .footer a { color: #ff0064; text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>💀 DEVILS WILL RISE</h1>
+    <p class="subtitle">Decrypter Tool — Dark Tunnel • HTTP Custom • EHI • NPV • SSC</p>
+
+    <div class="dropzone" id="dropzone">
+      <div class="icon">📁</div>
+      <p>اسحب الملف هنا أو اضغط للاختيار</p>
+      <p class="hint">.dark • .hc • .ehi • .npvt • .ssc</p>
+      <input type="file" id="fileInput" hidden>
+    </div>
+
+    <div class="divider">أو الصق الرابط / النص</div>
+
+    <textarea id="textInput" placeholder="darktunnel://... أو httpcustom://..."></textarea>
+
+    <button id="decryptBtn">🔓 فك التشفير</button>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      جارٍ فك التشفير...
+    </div>
+
+    <div class="output" id="output">
+      <div class="output-header">
+        <span class="output-type" id="outputType"></span>
+        <button class="copy-btn" id="copyBtn">📋 نسخ</button>
+      </div>
+      <div id="outputContent"></div>
+    </div>
+
+    <div class="footer">
+      Owner: <a href="#">@Q4R_R</a> • Channel: <a href="#">@Mo7med1524</a>
+    </div>
+  </div>
+
+<script>
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const textInput = document.getElementById('textInput');
+const decryptBtn = document.getElementById('decryptBtn');
+const loading = document.getElementById('loading');
+const output = document.getElementById('output');
+const outputType = document.getElementById('outputType');
+const outputContent = document.getElementById('outputContent');
+const copyBtn = document.getElementById('copyBtn');
+
+let selectedFile = null;
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('drag');
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) handleFile(fileInput.files[0]);
+});
+
+function handleFile(file) {
+  selectedFile = file;
+  dropzone.querySelector('p').textContent = '✅ ' + file.name;
+  textInput.value = '';
+}
+
+decryptBtn.addEventListener('click', async () => {
+  const text = textInput.value.trim();
+  if (!selectedFile && !text) {
+    showError('❌ من فضلك اختر ملفاً أو الصق نصاً أولاً');
+    return;
+  }
+  showLoading(true);
+  hideOutput();
+  try {
+    let res;
+    if (selectedFile) {
+      const fd = new FormData();
+      fd.append('file', selectedFile);
+      res = await fetch('/api/decrypt', { method: 'POST', body: fd });
+    } else {
+      res = await fetch('/api/decrypt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+    }
+    const data = await res.json();
+    showLoading(false);
+    if (data.success) {
+      showOutput(data.type, data.result);
+    } else {
+      showError('❌ ' + (data.error || 'فشل فك التشفير'));
+    }
+  } catch (err) {
+    showLoading(false);
+    showError('❌ خطأ في الاتصال بالخادم: ' + err.message);
+  }
+});
+
+function showLoading(show) {
+  loading.classList.toggle('show', show);
+  decryptBtn.disabled = show;
+}
+function hideOutput() { output.classList.remove('show', 'error'); }
+function showOutput(type, content) {
+  outputType.textContent = '✅ ' + type;
+  outputContent.textContent = content;
+  output.classList.add('show');
+  output.classList.remove('error');
+}
+function showError(msg) {
+  outputType.textContent = '❌ خطأ';
+  outputContent.textContent = msg;
+  output.classList.add('show', 'error');
+}
+copyBtn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(outputContent.textContent);
+    copyBtn.textContent = '✅ تم النسخ';
+    setTimeout(() => copyBtn.textContent = '📋 نسخ', 1500);
+  } catch { copyBtn.textContent = '❌ فشل'; }
+});
+</script>
+</body>
+  </html>
